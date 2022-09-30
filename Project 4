@@ -1,0 +1,239 @@
+---
+title: "Stats 20, Summer 2021 -- Homework 4"
+author: "Tom Slavonia -- 205511702"
+date: "`r format(Sys.Date(), '%D')`"
+output:
+  html_document:
+    toc: yes            # creates table of contents
+    toc_depth: 4        # toc will include headers <= ####
+    toc_float: yes      # toc always on left of page
+    code_folding: show  # allows hiding of code
+---
+## Question 1
+
+```{r}
+my_which <- function(x, arr.ind = FALSE) {
+  if (arr.ind == TRUE) {
+    i <- 0 
+  j <- 0  
+  which_mat <- c()
+   while (i < nrow(x)) {
+     i <- i + 1
+     while (j < ncol(x)) {
+       j <- j + 1
+       if (x[i, j] == TRUE) {
+         which_mat[] <- x[i, j]
+       }
+     }
+   }
+  }
+  else {
+    i <- 0
+    which_mat <- c()
+    while (i < length(x)) {
+      if (x[i]) {
+        which_mat[] <- x[i]
+      }
+    }
+  }
+  which_mat
+}
+```
+
+## Question 2
+
+### (a)
+```{r}
+char <- c("2", "1", "0")
+num <- 0:2
+charnum <- data.frame(char, num, stringsAsFactors = TRUE)
+as.numeric(char)
+as.numeric(charnum$char)
+```
+
+The results are different because the data frame is indexed differently so the first value is one and then and then the numbers ascend in order, by one, no matter the order
+
+### (b)
+```{r}
+as.numeric(as.character(charnum$char))
+```
+
+## Question 3
+
+### (a)
+```{r}
+simple_list <- list("vector" = 1:10, "matrix" = matrix(6:1, nrow = 3, ncol = 2))
+```
+You can't use simple_list$NULL <- NULL to add a Null value to the list because that there are no Null in the list and that the list already has values in it. 
+
+### (b)
+```{r}
+simple_list <- list("vector" = 1:10, "matrix" = matrix(6:1, nrow = 3, ncol = 2), "Null" = NULL)
+simple_list
+length(simple_list) == 3
+```
+
+### (c)
+```{r}
+?attributes
+simple_list$Null <- NULL
+```
+
+## Question 4
+
+```{r}
+my_scale <- function(x) {
+  a <- min(x)
+  b <- max(x)
+  output_vec <- x
+  if (!is.numeric(a)| !is.numeric(b)) {
+    for (i in x) {
+      output_vec[i] <- (x[i] - min(x))/(max(x)-min(x))
+    }
+  }
+  else {
+  for (i in x) {
+    output_vec[i] <- a + ((abs(x[i]-min(x))*(b-a))/(max(x)-min(x)))
+  }
+  }
+  output_vec
+}
+```
+
+## Question 5
+
+### (a)
+```{r}
+load("mlb.RData")
+# (i)
+tapply(hit, team, max)
+
+# (ii)
+tapply(ab, team, length)
+
+# (iii)
+table(team[hr > 0])
+```
+
+### (b)
+```{r}
+# (i)
+table(team[ab > 100 & hit/ab])
+
+#(ii)
+(tapply(hit, team, mean))/(tapply(ab, team, mean))
+```
+
+### (c)
+```{r}
+tapply(hr, list(pos, league), mean)
+
+```
+
+### (d)
+```{r}
+# tapply(pos, list(pos, team), median)
+# Don't know how to do this problem
+```
+
+## Question 6
+
+### (a)
+```{r}
+  # Create a function titled no_metric() that converts every value in a dataset to the corresponding value in the imperial system. There are four variables. The metric variables are temperature(C), width(cm), weigth(kg), volume(ml), but the variables could also be already in the imperial system of measurement; those variables could be temperature(`F`) (F = C*1.8+32), width(`in`) (in = cm/2.54), weight(lbs) (lbs = kg*2.205). The variables already in the imperial system of measurement must not be converted by the function. 
+
+no_metric <- function(x) {
+  
+  for (i in ncol(x)) {
+    if (x$temperature(C)==TRUE) {
+      with(x, temperature(C)*1.8+32) 
+    }
+    if (x$weight(kg)==TRUE) {
+      with(x, weight(kg)*2.205)
+      temperature(`F`) = temperature(C)
+    }
+    if (x$width(cm)==TRUE) {
+      with(x, width(cm)/2.54)
+      width(`in`) = width(cm)
+    }
+  }
+  x
+}
+```
+
+### (b)
+```{r}
+# The function super_scale() is supposed to input a matrix and output a matrix with every value to the power of the value in the original matrix. 
+super_scale <- function(x, n) {
+  new_mat <- x
+  for (i in x) {
+    for (j in x) {
+      new_mat <- x[i, j]^n
+    }
+  }
+}
+# The errors are that the function doesn't return anything, so you'll get no answer, the for loops should use the columns and rows, the matrix won't be looped through correctly, and also that the new values aren't assigned properly to new_mat. 
+
+super_scale <- function(x, n) {
+  new_mat <- x
+  for (i in nrow(x)) {
+    for (j in ncol(x)) {
+      new_mat[i, j] <- x[i, j]^n
+    }
+  }
+  new_mat
+}
+```
+
+## Question 7
+
+### (a)
+
+```{r}
+my_unlist <- function(x) {
+  unlist_vec <- c()
+  for (i in length(x)) {
+    for (j in x) {
+    unlist_vec[i] <- x[i]
+    }
+  } 
+  unlist_fac <- factor(unlist_vec)
+}
+
+```
+
+### (b)
+```{r}
+stat_mode <- function(x, first = FALSE) {
+  stat_mode <- unlist(x)
+  for (i in length(x)) {
+    stat_mode[i] <- mode(x[i])
+  }
+  stat_mode <- unique(stat_mode)
+  stat_mode
+}
+```
+
+### (c)
+```{r}
+df_summary <- function(x) {
+  column_print <- function(x) {
+    for (i in ncol(x)) {
+      list(colnames(x[i]))
+      class(x[i])
+      min(x[i])
+      mean(x[i])
+      max(x[i])
+      sum(is.na(x[i]))
+    }
+  }
+  df_list <- list("n_obs" = length(x), "n_var" = ncol(x), "var_names" = colnames(x), "column_data" = list(column_print))
+  df_list
+}
+```
+
+### (d)
+```{r}
+load("starwars.RData")
+df_summary(starwars)
+```
