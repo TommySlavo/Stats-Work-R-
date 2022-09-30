@@ -1,0 +1,303 @@
+---
+title: "Stats 20, Summer 2021 -- Homework 3"
+author: "Tom Slavonia -- 205511702"
+date: "`r format(Sys.Date(), '%D')`"
+output:
+  html_document:
+    toc: yes            # creates table of contents
+    toc_depth: 4        # toc will include headers <= ####
+    toc_float: yes      # toc always on left of page
+    code_folding: show  # allows hiding of code
+---
+## Question 1
+
+### (a)
+```{r Question 1a}
+
+my_min <- function(x, na.rm = FALSE) {
+  the_min <- x[1]
+  if (na.rm == TRUE) {
+    na.omit(x)
+  }
+  
+  for (i in 1:length(x)) {
+    if (x[i] < the_min){
+      the_min <- x[i]
+    }
+  }
+  the_min
+}
+```
+
+### (b)
+```{r Question 1b}
+#(i) 
+my_min(c(4, 1, 0, 2, -3, -5, -4))
+
+#(ii) 
+my_min(c("bears", "beets", "Battlestar Galactica"))
+
+#(iii) 
+my_min(7)
+
+#(iv) 
+# my_min(c("Pawnee", "rules", "Eagleton", NA), TRUE)
+
+#(v) 
+# my_min(NA, FALSE)
+# my_min(NA, TRUE)
+# The function doesn't work with NA values
+```
+
+## Question 2
+
+### (a)
+```{r Question 2a}
+fib1 <- 1
+fib2 <- 1
+full_fib <- c(fib1, fib2)
+while (fib1 + fib2 < 500) {
+fib2 <- fib1 + fib2
+full_fib <- c(full_fib, fib2)
+fib1 <- fib2 - fib1
+}
+full_fib
+
+```
+
+### (b)
+```{r Question 2b}
+full_fib <- c(1, 1)
+while (full_fib[length(full_fib)] + full_fib[length(full_fib)-1] < 500) {
+  full_fib <- c(full_fib, full_fib[length(full_fib)]+full_fib[length(full_fib)-1])
+}
+full_fib
+```
+
+### (c)
+```{r Question 2c}
+full_fib <- c(1, 1)
+while (full_fib[length(full_fib)] + full_fib[length(full_fib)-1] < 10^9) {
+  full_fib <- c(full_fib, full_fib[length(full_fib)]+full_fib[length(full_fib)-1])
+}
+length(full_fib)
+```
+
+## Question 3
+
+```{r Question 3}
+my_t <- function(x) {
+  for (i in 1:nrow(x)) {
+    for (j in 1:ncol(x)) {
+      x[i, j] <- x[j, i]
+    }
+  }
+}
+```
+
+### Question 4
+
+### (a)
+```{r Question 4a}
+my_cor <- function(x, y, use) {
+  if (use == "pairwise.complete.obs") {
+    rm(x, y)
+  }
+  r <- (sum((x-mean(x))*(y-mean(y))))/((sqrt(sum((x-mean(x))^2)))*(sqrt(sum((y-mean(y))^2))))
+  r
+}
+
+```
+
+### (b)
+```{r Question 4b}
+linreg <- function(x, y, use) {
+   if (use == "pairwise.complete.obs") {
+    rm(x, y)
+   }
+   r <- (sum((x-mean(x))*(y-mean(y))))/((sqrt(sum((x-mean(x))^2)))*(sqrt(sum((y-mean(y))^2))))
+  b <- r*(sd(y)/sd(x))
+  a <- mean(y) - b*mean(x)
+  c(a, b)
+  
+}
+```
+
+### (c)
+```{r Question 4c}
+linreg(c(61, 62, 63, 64, 66, 68), c(104, 110, 125, 141, 160, 170), use = T)
+
+# equation
+# y = 10x-510
+```
+
+### (d)
+```{r Question 4d}
+linreg_mat <- function(x, y) {
+  mat <- cbind(1, x)
+  design <- ((mat*mat)^(-1))*mat*y
+  design
+}
+```
+
+### (e)
+```{r Question 4e}
+linreg_mat(c(61, 62, 63, 64, 66, 68), c(104, 110, 125, 141, 160, 170))
+
+```
+### (f)
+In the context of the data, the slope coefficent shows the different slope of the lines of linear regression that are created depending on the inputs changing. 
+
+## Question 5
+
+### (a)
+```{r Question 5a}
+`%m%` <- function(A, B) {
+  multi_mat <- matrix(0, dim(A)[1], dim(B)[1])
+  for (i in 1:dim(A)[1]) {
+    for (j in 1:dim(B)[2]) {
+      for (v in 1:dim(A)[2]) {
+        multi_mat[i, j] <- multi_mat[i, j]+A[i, v]*B[v, j]
+      }
+    }
+  }
+  multi_mat
+}
+
+```
+
+### (b)
+```{r Question 5b}
+X <- rbind(6:4, 3:1)
+Y <- matrix(1:9, ncol = 3)
+`%m%`(X, Y)
+X
+Y
+```
+
+## Question 6
+
+### (a)
+```{r Question 6a}
+`%^%` <- function(x, k) {
+  influx_mat <- matrix(0, dim(x))
+  for (i in 1:dim(x)[1]*dim(x)[2]) {
+    influx_mat[i] <- x[i]^k
+  }
+  influx_mat
+}
+```
+
+### (b)
+```{r Question 6b}
+Z <- matrix(c(0.2, 0.7, 0.1, 0.6, 0.2, 0.2, 0.4, 0.1, 0.5))
+`%^%`(Z, 0)
+`%^%`(Z, 5)
+`%^%`(Z, 50)
+`%^%`(Z, 500)
+```
+
+## Question 7
+```{r Question 7}
+jerry <- 2:((8 * 5) %% 3^-2:(7 > 2))
+jerry
+
+```
+
+## Question 8
+
+### (a)
+```{r Question 8a}
+my_ifelse <- function(test, yes, no) {
+  if_vec <- (test)
+  if (test == FALSE) {
+    no
+  }
+  
+  if (test == TRUE) {
+    yes
+  }
+  if_vec
+}
+
+```
+
+### (b)
+```{r Question 8b}
+x <- (1:10) * pi
+my_ifelse(x %% 1 >= 0.5, x %/% 1 + 1, x %/% 1)
+
+```
+
+### (c)
+```{r Question 8c}
+my_abs <- function(x) {
+  abs_vec <- x
+  if (x[i] < 0) {
+    x[i]*-1
+  }
+  abs_vec
+}
+
+my_sign <- function(x) {
+  if (x[i] < 0) {
+    -1
+  }
+  if (x[i] == 0) {
+    0
+  }
+  if (x[i] > 0) {
+    1
+  }
+}
+
+```
+
+## Question 9
+
+### (a)
+```{r Question 9a}
+count <- 0
+my_row <- function(x) {
+  row_mat <- x
+   for (i in 1:dim(x)[1]) {
+    count <- count + 1
+    rbind(row_mat[i]) <- count
+   }
+  row_mat
+}
+
+```
+
+### (b)
+```{r Question 9b}
+count <- 0
+my_col <- function(x) {
+  col_mat <- x
+   for (i in 1:dim(x)[2]) {
+    count <- count + 1
+    col_mat[i] <- count
+   }
+  col_mat
+}
+
+```
+
+### (c)
+```{r Question 9c}
+count <- 1
+scaler <- 1
+my_diag <- function(x, nrow, ncol) {
+  new_mat <- x
+  for (i in 1:dim(x)[1]*dim(x)[2]) {
+    for (i in 1:dim(x)[1]) {
+      if (scaler == count) {
+        new_mat[i] <- x[i]
+        count <- count + 1
+      }
+    }
+    scaler <- scaler + 1
+   }
+}
+
+```
