@@ -1,0 +1,53 @@
+---
+title: "Stats 20, Summer 2021 -- Homework 1"
+author: "Tom Slavonia -- 205511702"
+date: "`r format(Sys.Date(), '%D')`"
+output:
+  html_document:
+    toc: yes            # creates table of contents
+    toc_depth: 4        # toc will include headers <= ####
+    toc_float: yes      # toc always on left of page
+    code_folding: show  # allows hiding of code
+---
+
+## Question 1
+
+### (a)
+<!-- ENTER YOUR ANSWER BELOW -->
+**"Sometimes you have to make the hardes climb to see the most beautiful sunrise.** I read that once on an old lady's decorative pillow, but it is really how I feel today. I've climbed a very weird and rocky mountain, and it was a pain in the ass, and my legs are tired, and I'm starving. But *the sun is rising over a sea of love and waffles and possibility.* So *I'm just gonna relax and take a deep breath and enjoy this view for as long as I possibly can."* - Leslie Knope (from **Parks and Recreation**)
+
+### (b)
+<!-- ENTER YOUR ANSWER BELOW -->
+
+|Homework|Midterm|Final Exam|Final Project|
+|------:||------:||------:||------:|
+|18%||30%||40%||12%|
+|------:||------:||------:||------:|
+
+### (c)
+<!-- ENTER YOUR ANSWER BELOW -->
+
+*2020
+  +Summer
+    -Math 31A
+    -Pol Sci 40
+  +Fall
+    -Chin 50
+    -Math 31B
+    -Hist 1A
+  +Winter
+    -Philos 8
+    -Pol Sci 50
+    -Stats 10
+    
+*2021
+  +Spring
+    -Comp Sci 1
+    -Econ 1
+    -LifeSci 7A
+
+I don't understand why this question and questtion 1b don't work properly 
+
+### (d)
+<!-- ENTER YOUR ANSWER BELOW -->
+![D'Ann Lawrence, 2020, San Francisco](Kitten.jpg)
